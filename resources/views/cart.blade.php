@@ -17,6 +17,10 @@
 <div class="section section-padding-02">
     <div class="container">
         <div class="cart-wrapper">
+            @if (session('coupon_error'))
+            <div class="alert alert-danger">{{ session('coupon_error') }}</div>
+            @endif
+            
             <!-- Cart Wrapper Start -->
             <div class="cart-table table-responsive">
                 <table class="table">
@@ -37,7 +41,7 @@
                             $sub_total = 0;
                             $checkout_btn_status = true;
                         @endphp
-                        @foreach ($cart_items as $cart_item)
+                        @forelse ($cart_items as $cart_item)
                         <tr>
                             <td class="Product-thumb">
                                 <img src="{{ asset('uploads/product_photo') }}/{{ App\Models\Product::find($cart_item->product_id)->product_photo }}" alt="">
@@ -74,9 +78,11 @@
                          @php
                              $sub_total += (App\Models\Product::find($cart_item->product_id)->product_price * $cart_item->cart_amount)
                          @endphp 
-                        @endforeach
-                        
-
+                         @empty
+                         <tr class="text-danger text-center">
+                            <td colspan="6">No Product Found</td>
+                         </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -87,7 +93,7 @@
                     <a href="{{ url('shop') }}" class="btn btn-dark btn-hover-primary">Continue Shopping</a>
                 </div>
                 <div class="right-btn">
-                    <a href="cart.html#" class="btn btn-outline-dark">Clear Cart</a>
+                    
                     <button type="submit" class="btn btn-outline-dark">Update Cart</button>
                 </form>
                 </div>
@@ -95,112 +101,6 @@
             <!-- Cart btn Start -->
         </div>
         <div class="row">
-            {{-- <div class="col-lg-4">
-                <!-- Cart Shipping Start -->
-                <div class="cart-shipping">
-                    <div class="cart-title">
-                        <h4 class="title">Calculate Shipping</h4>
-                        <p>Estimate your shipping fee *</p>
-                    </div>
-                    <div class="cart-form">
-                        <p>Calculate shipping</p>
-                        <form action="cart.html#">
-                            <div class="single-select2">
-                                <div class="form-select2">
-                                    <select class="select2">
-                                        <option value="0">Select a country…</option>
-                                        <option value="1">Bangladesh</option>
-                                        <option value="2">Canada</option>
-                                        <option value="3">Colombia</option>
-                                        <option value="4">Indonesia</option>
-                                        <option value="5">Italy</option>
-                                        <option value="6">Pakistan</option>
-                                        <option value="7">Turkey</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="single-select2">
-                                <div class="form-select2">
-                                    <select class="select2">
-                                        <option value="">Select an option…</option>
-                                        <option value="BAG">Bagerhat</option>
-                                        <option value="BAN">Bandarban</option>
-                                        <option value="BAR">Barguna</option>
-                                        <option value="BARI">Barisal</option>
-                                        <option value="BHO">Bhola</option>
-                                        <option value="BOG">Bogra</option>
-                                        <option value="BRA">Brahmanbaria</option>
-                                        <option value="CHA">Chandpur</option>
-                                        <option value="CHI">Chittagong</option>
-                                        <option value="CHU">Chuadanga</option>
-                                        <option value="COM">Comilla</option>
-                                        <option value="COX">Cox's Bazar</option>
-                                        <option value="DHA">Dhaka</option>
-                                        <option value="DIN">Dinajpur</option>
-                                        <option value="FAR">Faridpur </option>
-                                        <option value="FEN">Feni</option>
-                                        <option value="GAI">Gaibandha</option>
-                                        <option value="GAZI">Gazipur</option>
-                                        <option value="GOP">Gopalganj</option>
-                                        <option value="HAB">Habiganj</option>
-                                        <option value="JAM">Jamalpur</option>
-                                        <option value="JES">Jessore</option>
-                                        <option value="JHA">Jhalokati</option>
-                                        <option value="JHE">Jhenaidah</option>
-                                        <option value="JOY">Joypurhat</option>
-                                        <option value="KHA">Khagrachhari</option>
-                                        <option value="KHU">Khulna</option>
-                                        <option value="KIS">Kishoreganj</option>
-                                        <option value="KUR">Kurigram</option>
-                                        <option value="KUS">Kushtia</option>
-                                        <option value="LAK">Lakshmipur</option>
-                                        <option value="LAL">Lalmonirhat</option>
-                                        <option value="MAD">Madaripur</option>
-                                        <option value="MAG">Magura</option>
-                                        <option value="MAN">Manikganj </option>
-                                        <option value="MEH">Meherpur</option>
-                                        <option value="MOU">Moulvibazar</option>
-                                        <option value="MUN">Munshiganj</option>
-                                        <option value="MYM">Mymensingh</option>
-                                        <option value="NAO">Naogaon</option>
-                                        <option value="NAR">Narail</option>
-                                        <option value="NARG">Narayanganj</option>
-                                        <option value="NARD">Narsingdi</option>
-                                        <option value="NAT">Natore</option>
-                                        <option value="NAW">Nawabganj</option>
-                                        <option value="NET">Netrakona</option>
-                                        <option value="NIL">Nilphamari</option>
-                                        <option value="NOA">Noakhali</option>
-                                        <option value="PAB">Pabna</option>
-                                        <option value="PAN">Panchagarh</option>
-                                        <option value="PAT">Patuakhali</option>
-                                        <option value="PIR">Pirojpur</option>
-                                        <option value="RAJB">Rajbari</option>
-                                        <option value="RAJ">Rajshahi</option>
-                                        <option value="RAN">Rangamati</option>
-                                        <option value="RANP">Rangpur</option>
-                                        <option value="SAT">Satkhira</option>
-                                        <option value="SHA">Shariatpur</option>
-                                        <option value="SHE">Sherpur</option>
-                                        <option value="SIR">Sirajganj</option>
-                                        <option value="SUN">Sunamganj</option>
-                                        <option value="SYL">Sylhet</option>
-                                        <option value="TAN">Tangail</option>
-                                        <option value="THA">Thakurgaon</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="single-form">
-                                <input class="form-control" type="text" placeholder="Postcode/ziip">
-                            </div>
-                            <div class="single-form">
-                                <button class="btn btn-dark btn-hover-primary">Update totals</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- Cart Shipping End -->
-            </div> --}}
             <div class="col-lg-4">
                 <!-- Cart Shipping Start -->
                 <div class="cart-shipping">
@@ -209,14 +109,14 @@
                         <p>Enter your coupon code if you have one.</p>
                     </div>
                     <div class="cart-form">
-                        <form action="cart.html#">
+                        {{-- <form action="cart.html#"> --}}
                             <div class="single-form">
-                                <input class="form-control" type="text" placeholder="Enter your coupon code..">
+                                <input id="coupon_text" class="form-control" type="text" placeholder="Enter your coupon code..">
                             </div>
                             <div class="single-form">
-                                <button class="btn btn-dark btn-hover-primary">Apply Coupon</button>
+                                <button id="coupon_btn" class="btn btn-dark btn-hover-primary">Apply Coupon</button>
                             </div>
-                        </form>
+                        {{-- </form> --}}
                     </div>
                 </div>
                 <!-- Cart Shipping End -->
@@ -234,35 +134,32 @@
                                     <td>
                                         <p class="value">Subtotal</p>
                                     </td>
-                                    <td>
-                                        
-                                        <p class="price">{{ $sub_total }}</p>
-                                    </td>
+                                    <td> <p class="price">{{ $sub_total }}</p></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <p class="value">Discount</p>
-                                    </td>
-                                    <td>
-                                        <p class="price">0</p>
-                                    </td>
+                                    <td><p class="value">Discount({{$discount }}%)</p></td>
+                                    <td> <p class="price">-{{ $discount /100 * $sub_total }}</p> </td>
                                 </tr>
                                 <tr>
+                                    <td> <p class="value">Total</p> </td>
                                     <td>
-                                        <p class="value">Total</p>
-                                    </td>
-                                    <td>
-                                        <p class="price">590.00</p>
+                                        <p class="price">{{ $sub_total - $discount /100 * $sub_total }}</p>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        @php
+                            session([
+                                'cart_form_subtotal' => $sub_total,
+                                'cart_form_discount' => $discount /100 * $sub_total,
+                            ]);
+                        @endphp
                     </div>
                     <div class="cart-total-btn mt-20">
                         @if ( $checkout_btn_status)
-                        <a href="cart.html#" class="btn btn-dark btn-hover-primary btn-block">Proceed To Checkout</a>
+                        <a href="{{ url('checkout') }}" class="btn btn-dark btn-hover-primary btn-block">Proceed To Checkout</a>
                         @else
-                        <a href="cart.html#" class="btn btn-danger btn-hover-danger btn-block">Check Checkout Products</a>
+                        <a href="{{ url('shop') }}" class="btn btn-danger btn-hover-danger btn-block">Check Stockout Products</a>
                         @endif
                         
                     </div>
@@ -273,4 +170,15 @@
     </div>
 </div>
 <!-- Shopping Cart Section End -->
+@endsection
+@section('footer_script')
+    <script>
+        $(document).ready(function(){
+        $('#coupon_btn').click(function(){
+            var current_link = '{{ url('cart') }}';
+            var link_go_to = current_link + '/'+ $('#coupon_text').val();
+            window.location.href = link_go_to;
+        })
+    })
+    </script>
 @endsection

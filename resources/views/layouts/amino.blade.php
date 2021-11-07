@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Amino - Organic eCommerce Website</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
@@ -15,6 +16,7 @@
   
     <link rel="stylesheet" href="{{ asset('amino_assets/css/vendor/plugins.min.css') }}">
     <link rel="stylesheet" href="{{ asset('amino_assets/css/style.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -557,6 +559,8 @@
 
     <!-- Main JS -->
     <script src="{{ asset('amino_assets/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    @yield('footer_script')
 
 </body>
 

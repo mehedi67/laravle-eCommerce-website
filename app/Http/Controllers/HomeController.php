@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -25,6 +26,19 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::latest()->get();
+        
         return view('home', compact('users'));
+    }
+
+    public function userinsert(Request $request){
+        print_r($request->all());
+        User::insert([
+            'name'  =>$request->name,
+            'email'  =>$request->email,
+            'password'  =>bcrypt($request->password),
+            'role'  =>$request->role,
+            'created_at' => Carbon::now()
+        ]);
+        return back()->with('user_status','User Added Successfully');
     }
 }

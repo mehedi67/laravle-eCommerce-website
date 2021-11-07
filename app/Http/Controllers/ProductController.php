@@ -12,6 +12,11 @@ use Image;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('Admin');
+    }
     public function index(){
         return view('product.index',[
             'products' => Product::all(),

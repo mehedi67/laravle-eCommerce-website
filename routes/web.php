@@ -8,7 +8,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\SslCommerzPaymentController;
 
 
 
@@ -22,6 +24,7 @@ Route::get('shop/category/{category_id}',[FrontendController::class,'shop_catego
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('user/insert', [HomeController::class, 'userinsert'])->name('userinsert');
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 //category controller
@@ -52,10 +55,32 @@ Route::post('/product/insert', [ProductController::class, 'insert']);
 
 Route::post('/add/to/cart', [CartController::class, 'addtocart']);
 Route::get('/cart/delete/{cart_id}', [CartController::class, 'cartdelete']);
-Route::get('/cart', [CartController::class, 'cart']);
+Route::get('/cart', [CartController::class, 'cart']);//cart page without coupon
+Route::get('/cart/{coupon_name}', [CartController::class, 'cart']);//cart page with coupon
 Route::post('update/cart', [CartController::class, 'updatecart']);
+
+//Checkout
+Route::get('checkout',[CheckoutController::class,'index']);
+Route::post('getCityList',[CheckoutController::class,'getCityList']);
+Route::post('checkout/post',[CheckoutController::class,'checkoutpost']);
+
+
+
 
 //coupon
 Route::get('/coupon', [CouponController::class, 'index']);
 Route::post('/coupon/insert', [CouponController::class, 'insert'])->name('insert');
 
+// SSLCOMMERZ Start
+Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
+Route::get('/online/payment', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
+
+Route::post('/pay', [SslCommerzPaymentController::class, 'index']);
+Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
+
+Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END

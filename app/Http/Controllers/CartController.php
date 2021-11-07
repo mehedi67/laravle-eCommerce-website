@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Coupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Cookie;
@@ -10,11 +11,38 @@ use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
-    public function cart(){
-         
-        return view('cart',[
-            'cart_items' => Cart::where('generated_cart_id',Cookie::get('generated_cart_id'))->get()
-        ]);
+  
+
+    public function cart($coupon_name =''){
+
+        if($coupon_name ==''){
+            $discount = 0;
+        }else{
+            if(Coupon::where('coupon_name',$coupon_name)->exists()){
+             
+                if(Carbon::now()->format('Y-m-d') > Coupon::where('coupon_name',$coupon_name)->first()->coupon_validity_till){
+                    echo " date shes";
+                    return back()->with('coupon_error','This coupon date is expired!');
+                }else{
+                    $discount = Coupon::where('coupon_name',$coupon_name)->first()->coupon_discount_amount;
+                   
+                }
+            }else{
+                return back()->with('coupon_error','There is no coupon that you enter');
+            }
+            // $discount = 100;
+        }
+
+        // die();
+
+            $cart_item=  Cart::where('generated_cart_id',Cookie::get('generated_cart_id'))->get();
+            // if ($cart_item->count() < 1) {
+            //     return redirect()->back()->with('status','Your cart is empty. please add some product in your cart.');
+            // }
+                    return view('cart',[
+                        'discount' =>$discount,
+                        'cart_items' =>$cart_item
+                    ]);
     }
 
     public function addtocart(Request $request){
